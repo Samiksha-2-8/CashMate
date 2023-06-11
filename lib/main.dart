@@ -1,200 +1,205 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 void main() {
-  runApp(CreateProfileApp());
+  runApp(const MyApp());
 }
 
-class CreateProfileApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Create Profile',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: CreateProfile(),
+      home:SettingsPageUI(),
     );
   }
 }
 
-class CreateProfile extends StatefulWidget {
+class SettingsPageUI extends StatefulWidget {
+
+
   @override
-  _CreateProfileState createState() => _CreateProfileState();
+ _SettingsPageUIState createState() => _SettingsPageUIState();
 }
 
-class _CreateProfileState extends State<CreateProfile> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _professionController = TextEditingController();
-  TextEditingController _dobController = TextEditingController();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _aboutController = TextEditingController();
+class _SettingsPageUIState extends State<SettingsPageUI> {
+  bool valNotify1=true;
+bool valNotify2=false;
+bool valNotify3=false;
+onChangeFunctional1(bool newValue1)
+{
+  setState((){
+valNotify2=newValue1;
+  });
+}
+onChangeFunctional2(bool newValue2)
+{
+  setState((){
+valNotify1=newValue2;
+  });
+}
+onChangeFunctional3(bool newValue3)
+{
+  setState((){
+valNotify3=newValue3;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('USER BANK DETAILS'),
+      title:Text(" Settings UI",style:TextStyle(fontSize: 22)),
+      leading: IconButton(
+        onPressed: () {},
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+          
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(10),
         child: ListView(
-          children: <Widget>[
-            imageProfile(),
-            SizedBox(
-              height: 20,
+          children: [
+            SizedBox(height: 40),
+            Row(
+              children: [
+            Icon(
+              Icons.person,
+              color: Colors.deepPurple,
             ),
-            nameTextField(),
-            SizedBox(
-              height: 20,
-            ),
-            professionTextField(),
-            SizedBox(
-              height: 20,
-            ),
-            dobField(),
-            SizedBox(
-              height: 20,
-            ),
-            titleTextField(),
-            SizedBox(
-              height: 20,
-            ),
-            aboutTextField(),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(width: 10),
+            Text("Account",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold))
+          ],
+        ),
+      Divider(height: 20,thickness: 1),
+      SizedBox(height: 10),
+          buildAccountOption(context,"Change Password"),
+          buildAccountOption(context,"Content settings"),
+          buildAccountOption(context, "Social"),
+          buildAccountOption(context,"Language"),
+          buildAccountOption(context, "Privacy and Securtiy"),
+          SizedBox(height: 40),
+          Row(
+            children: [
+              Icon(Icons.volume_up_outlined,color: Colors.deepPurple),
+              SizedBox(width: 10),
+              Text("Notifications",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold))
+           
+            ],
+          ),
+          Divider(height: 20,thickness: 1),
+          SizedBox(height: 10),
+          buildNotificationOption("Theme Dark", valNotify1,onChangeFunctional1),
+            buildNotificationOption("Account Active", valNotify2,onChangeFunctional2),
+              buildNotificationOption("Opportunity", valNotify3,onChangeFunctional3),
+              SizedBox(height: 50),
+              Center(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)
+                    )
+                  ),
+                  onPressed: (){},
+                  child:Text("SIGN OUT",style: TextStyle(
+                    fontSize: 16,
+                    letterSpacing: 2.2,
+                    color: Colors.black
+                  )) ,
+                ), 
+              )
           ],
         ),
       ),
     );
   }
-
-  Widget imageProfile() {
-    return Center(
-      child: Stack(
-        children: <Widget>[
-          CircleAvatar(
-            radius: 80.0,
-            backgroundImage: AssetImage("assets/fun-3d-cartoon-casual-character-woman_1.jpeg"),
-          ),
-          Positioned(
-            bottom: 20.0,
-            right: 20.0,
-            child:InkWell(
-              onTap: () {
-                showModalBottomSheet(
-                  context: context,
-                 builder: ((builder)=> bottomSheet()),
-                );
-              },
-            child: Icon(
-              Icons.camera_alt,
-              color: Colors.teal,
-              size: 28.0,
-            ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-Widget bottomSheet()
-{ return Container(
-  height: 100.0,
-  width: MediaQuery.of(context).size.width,
-  margin: EdgeInsets.symmetric(
-    horizontal: 20,
-    vertical: 20,
+  Padding buildNotificationOption(String title,bool value,Function onChangeMethod)
+  { return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 20),
+child: Row(
+mainAxisAlignment: MainAxisAlignment.spaceBetween,
+children:[
+  Text(title,style: TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: Colors.grey[600]
+  )),
+  Transform.scale(
+    scale:0.7,
+    child: CupertinoSwitch(
+      activeColor: Colors.blue,
+      trackColor: Colors.grey,
+      value: value,
+     onChanged: (bool newValue)
+     {
+      onChangeMethod(newValue);
+     },
+     ),
+  
   ),
-  child: Column(
-    children: <Widget>[
-      Text(
-        "Choose Profile Photo",
-        style: TextStyle(
-          fontSize: 20.0,
-        ),
-      ),
-      SizedBox(
-        height:20,
-      ),
-      Row(
-        children:<Widget>[
-          TextButton.icon(
-            icon: Icon(Icons.camera),
-            onPressed: () {
+],
+),
+  );
 
-            },
-            label: Text("Camera"),
 
-          ),
-          TextButton.icon(
-            icon:Icon(Icons.image),
-            onPressed: (){},
-            label:Text("Gallery"),
-          ),
-        ]
+   }
+  GestureDetector buildAccountOption(BuildContext context,String title)
+  { return  GestureDetector(
+    onTap: (){
+showDialog(context: context, builder: (BuildContext context){
+  return AlertDialog(
+    title: Text(title),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text("Option 1"),
+        Text("Option 2")
+
+      ],
+    ),
+  
+    actions: [
+      TextButton(
+        onPressed: () {
+Navigator.of(context).pop();
+        }, 
+        child: Text("Close")
         )
     ],
-  ),
-);
 
+  );
 }
-  Widget nameTextField() {
-    return TextFormField(
-      controller: _nameController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Name",
-        helperText: "Name can't be empty",
-        hintText: "username",
-      ),
-    );
-  }
+  );
+    },
+    child: Padding(
+      padding: EdgeInsets.symmetric(vertical: 8,horizontal: 20),
+      child: Row( 
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title,style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: Colors.grey[600]
+          )),
+          Icon(Icons.arrow_forward_ios,color:Colors.grey)
 
-  Widget professionTextField() {
-    return TextFormField(
-      controller: _professionController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Password",
-        helperText: "Password can't be empty",
-        
+      ],
       ),
-    );
-  }
+    ),
+  );
 
-  Widget dobField() {
-    return TextFormField(
-      controller: _dobController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Bank name",
-       
-      ),
-    );
-  }
-
-  Widget titleTextField() {
-    return TextFormField(
-      controller: _titleController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Bank Account Number",
-        
-        
-      ),
-    );
-  }
-
-  Widget aboutTextField() {
-    return TextFormField(
-      controller: _aboutController,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: "Bank Branch Address",
-        
-      ),
-    );
   }
 }
+      
+            
+     
